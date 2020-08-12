@@ -1,25 +1,41 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Feed from './components/Feed/Feed'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import Header from './components/Header';
+import { Container, CssBaseline, ThemeProvider, createMuiTheme } from '@material-ui/core';
+import Drawer from './components/Drawer';
+import { deepPurple, grey } from '@material-ui/core/colors';
+import { Helmet } from 'react-helmet';
 
 function App() {
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: deepPurple[`A400`]
+      }
+    },
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Helmet>
+        <style>{`body { background-color: ${grey[100]}; }`}</style>
+      </Helmet>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Drawer />
+        <Container maxWidth='lg'>
+          <Header title='Zhi Shi Dian' />
+          <main>
+            <Switch>
+              <Redirect from='/' to='/feed' exact />
+              <Route path='/feed' component={Feed} />
+            </Switch>
+          </main>
+        </Container>
+      </ThemeProvider>
+    </Router>
   );
 }
 
