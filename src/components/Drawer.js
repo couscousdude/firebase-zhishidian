@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),  },
 }));
 
-export default function MiniDrawer() {
+export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -130,7 +130,7 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List>
-            <ListItem button key={'profile'} component={Link} to='/users'>
+            <ListItem button key={'Profile'} component={Link} to='/users'>
               <ListItemIcon><AccountCircleIcon /></ListItemIcon>
               <ListItemText primary={'My Profile'} />
             </ListItem>
