@@ -44,7 +44,6 @@ export default function InitialLoadingScreen(props) {
 
     const handleOnExit = () => {
         setInitialLoading(false);
-        console.log('nerd');
     }
 
     return(

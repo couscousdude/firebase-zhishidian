@@ -51,7 +51,7 @@ const searchBarTheme = createMuiTheme({
 
 function SearchBar(props) {
   const classes = useStyles();
-  const { expanded, width, close } = props;
+  const { expanded, width } = props;
 
   const [searchValue, setSearchValue] = React.useState('');
 

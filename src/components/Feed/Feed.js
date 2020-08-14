@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Main from './Main';
 import post1 from './post1';
-import InitialLoadingScreen from '../InitialLoadingScreen';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     text: {
@@ -12,10 +12,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function Feed(props) {
     const classes = useStyles();
-    const { initialLoading, setInitialLoading, setLoading } = props;
-
+    const { setInitialLoading, setLoading } = props;
 
     const [posts, setPosts] = React.useState([]);
+    const [archive, setArchive] = React.useState([]);
+
+    const history = useHistory();
 
     React.useEffect(() => {
         // fetch posts here
@@ -27,10 +29,31 @@ export default function Feed(props) {
             setInitialLoading(false);
         }, 1000);
     }, [setInitialLoading, setLoading]);
+  
+    React.useEffect(() => {
+      let urlArchiveParam = new URLSearchParams(history.location.search).get('archive');
+      if (urlArchiveParam) {
+        if (urlArchiveParam.split(' ').length !== 2 
+            || urlArchiveParam.split(' ')[0] < 1 
+            || urlArchiveParam.split(' ')[0] > 12
+            || urlArchiveParam.split(' ')[1].toString().length !== 4) {
+            history.push('/feed');
+        } else {
+            setArchive(urlArchiveParam.split(' '));
+            // api call to fetch archives
+            setLoading(true);
+            setPosts([]);
+            setTimeout(() => {
+                setLoading(false);
+                setPosts([post1]);
+            }, 1000);
+        }
+    } else {
+        setArchive([]);
+    }
+    }, [history.location.search, setLoading, history]);
 
     return(
-        posts.length
-            ? <Main title='posts' posts={posts} /> 
-            : null
+        <Main title='Recent activity' posts={posts} archive={archive} />
     )
 }

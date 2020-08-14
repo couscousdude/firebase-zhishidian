@@ -3,6 +3,7 @@ import { Card, CardContent, Collapse, CardActionArea, Typography, CardActions, I
 import { makeStyles } from '@material-ui/core/styles';
 import Markdown from '../Markdown';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import { grey } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
     markdown: {
@@ -15,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     typography: {
         padding: theme.spacing(2),
     },
+    card: {
+        backgroundColor: grey['50']
+    }
   }));
 
 export default function Post(props) {
@@ -28,7 +32,7 @@ export default function Post(props) {
     const id = open ? 'post settings' : undefined;
 
     const handleMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget)
+        setAnchorEl(event.currentTarget);
     }
 
     const handleMenuClose = () => {
@@ -36,7 +40,7 @@ export default function Post(props) {
       };
 
     return(
-        <Card>
+        <Card variant='outlined' className={classes.card}>
             <Collapse 
                 in={expanded}
                 collapsedHeight={300}
