@@ -2,12 +2,13 @@ import React from 'react';
 import './App.css';
 import Feed from './components/Feed/Feed'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import { Container, CssBaseline, ThemeProvider, createMuiTheme } from '@material-ui/core';
 import Drawer from './components/Drawer';
 import { deepPurple, grey, lightBlue } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
 import BottomNavigation from './components/BottomNavigation';
+import StickyLoadingBar from './components/StickyLoadingBar';
 
 const theme = createMuiTheme({
   palette: {
@@ -23,17 +24,20 @@ const theme = createMuiTheme({
 
 function App() {
   const [mobile, setMobile] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(true);
+  const [initialLoading, setInitialLoading] = React.useState(true);
 
   const updateWindowDimensions = () => {
-    if (window.innerWidth <= 600) {
+    if (window.innerWidth <= 768) {
       setMobile(true);
-    } else if (window.innerWidth > 600) {
+    } else if (window.innerWidth > 768) {
       setMobile(false);
     }
-  } 
+  }
 
   React.useEffect(() => {
-    if (window.innerWidth <= 600) {
+    if (window.innerWidth <= 768) {
       setMobile(true);
     }
     window.addEventListener('resize', updateWindowDimensions);
@@ -43,6 +47,20 @@ function App() {
     }
   }, []);
 
+  let Nav;
+  if (mobile) {
+    Nav = <BottomNavigation />
+  } else {
+    Nav = <Drawer />
+  }
+
+  let LoadingBar;
+  if (loading) {
+    LoadingBar = <StickyLoadingBar />
+  } else {
+    LoadingBar = null;
+  }
+
   return (
     <Router>
       <Helmet>
@@ -50,16 +68,36 @@ function App() {
       </Helmet>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        { mobile
-            ? <BottomNavigation />
-            : <Drawer />
-        }
+        { !initialLoading
+          ? (
+            <>
+              {Nav}
+              {LoadingBar}
+            </>
+          ) : null }
         <Container maxWidth='lg'>
-          <Header title='Zhi Shi Dian' mobile={mobile} />
+          { !initialLoading
+              ? (
+            <Header 
+              title='Zhi Shi Dian' 
+              mobile={mobile}
+            />
+            ) : null }
           <main>
             <Switch>
               <Redirect from='/' to='/feed' exact />
-              <Route path='/feed' component={Feed} />
+              <Route 
+                path='/feed' 
+                render={() => (
+                  loggedIn
+                    ? <Feed 
+                        setLoading={setLoading} 
+                        initialLoading={initialLoading} 
+                        setInitialLoading={setInitialLoading} 
+                      />
+                    : <Redirect to='/login' />
+                )} 
+              />
             </Switch>
           </main>
         </Container>

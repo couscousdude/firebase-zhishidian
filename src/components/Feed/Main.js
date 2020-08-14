@@ -17,7 +17,7 @@ export default function Main(props) {
 
   return (
     <Grid container spacing={2} justify='center'>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={8} sm={8}>
             <Typography variant="h6" gutterBottom>
                 {title}
             </Typography>

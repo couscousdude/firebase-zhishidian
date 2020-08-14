@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Main from './Main';
 import post1 from './post1';
+import InitialLoadingScreen from '../InitialLoadingScreen';
 
 const useStyles = makeStyles(theme => ({
     text: {
@@ -9,12 +10,31 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const posts = [post1];
-
 export default function Feed(props) {
     const classes = useStyles();
+    const { initialLoading, setInitialLoading, setLoading } = props;
+
+
+    const [posts, setPosts] = React.useState([]);
+
+    React.useEffect(() => {
+        // fetch posts here
+        // placeholder api call:
+        setLoading(true);
+        setTimeout(() => {
+            setPosts([post1]);
+            setLoading(false);
+        }, 1000);
+    }, [setInitialLoading, setLoading]);
 
     return(
-        <Main title='posts' posts={posts} />
+        <>
+            { posts.length
+                ? <Main title='posts' posts={posts} /> 
+                : null }
+            { initialLoading 
+                ? <InitialLoadingScreen on={!posts.length} setInitialLoading={setInitialLoading} />
+                : null }
+        </>
     )
 }

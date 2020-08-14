@@ -21,7 +21,7 @@ export default function Post(props) {
     const { post } = props;
     const classes = useStyles();
 
-    const [expanded, setExpanded] = React.useState(true);
+    const [expanded, setExpanded] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const open = Boolean(anchorEl);
