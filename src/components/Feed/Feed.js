@@ -24,17 +24,13 @@ export default function Feed(props) {
         setTimeout(() => {
             setPosts([post1]);
             setLoading(false);
+            setInitialLoading(false);
         }, 1000);
     }, [setInitialLoading, setLoading]);
 
     return(
-        <>
-            { posts.length
-                ? <Main title='posts' posts={posts} /> 
-                : null }
-            { initialLoading 
-                ? <InitialLoadingScreen on={!posts.length} setInitialLoading={setInitialLoading} />
-                : null }
-        </>
+        posts.length
+            ? <Main title='posts' posts={posts} /> 
+            : null
     )
 }

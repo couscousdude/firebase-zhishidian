@@ -9,6 +9,8 @@ import { deepPurple, grey, lightBlue } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
 import BottomNavigation from './components/BottomNavigation';
 import StickyLoadingBar from './components/StickyLoadingBar';
+import NotFound from './components/NotFound';
+import InitialLoadingScreen from './components/InitialLoadingScreen';
 
 const theme = createMuiTheme({
   palette: {
@@ -68,6 +70,7 @@ function App() {
       </Helmet>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <InitialLoadingScreen on={initialLoading} setInitialLoading={setInitialLoading} />
         { !initialLoading
           ? (
             <>
@@ -76,13 +79,10 @@ function App() {
             </>
           ) : null }
         <Container maxWidth='lg'>
-          { !initialLoading
-              ? (
-            <Header 
-              title='Zhi Shi Dian' 
-              mobile={mobile}
-            />
-            ) : null }
+          <Header 
+            title='Zhi Shi Dian' 
+            mobile={mobile}
+          />
           <main>
             <Switch>
               <Redirect from='/' to='/feed' exact />
@@ -97,6 +97,11 @@ function App() {
                       />
                     : <Redirect to='/login' />
                 )} 
+              />
+              <Route 
+                render={() => (
+                  <NotFound setInitialLoading={setInitialLoading} />
+                )}
               />
             </Switch>
           </main>

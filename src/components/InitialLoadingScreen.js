@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, ThemeProvider, Fade } from '@material-ui/core';
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
-import { deepPurple } from '@material-ui/core/colors';
+import { deepPurple, grey } from '@material-ui/core/colors';
 import CircularProgress from './CircleLoaderLabeled';
 
 const useStyles = makeStyles({
@@ -14,6 +14,16 @@ const useStyles = makeStyles({
     },
     text: {
         fontWeight: 300,
+    },
+    blank: {
+        opacity: 1,
+        background: grey[100],
+        width: '100%',
+        height: '100%',
+        zIndex: 10,
+        top: 0,
+        left: 0,
+        position: 'fixed'
     }
 });
 
@@ -40,19 +50,21 @@ export default function InitialLoadingScreen(props) {
     return(
         <ThemeProvider theme={theme}>
             <Fade in={on} unmountOnExit onExited={handleOnExit}>
-                <div className={classes.root}>
-                    <Typography variant='h1' className={classes.text} align='center' color='primary'>
-                        Zhi Shi Dian
-                    </Typography>
-                    <div style={{display: 'flex', justifyContent: 'center', marginTop: 100}}>
-                        <CircularProgress 
-                            disableShrink 
-                            color='secondary' 
-                            size={150} 
-                        />
+                <div className={classes.blank}>
+                    <div className={classes.root}>
+                        <Typography variant='h1' className={classes.text} align='center' color='primary'>
+                            Zhi Shi Dian
+                        </Typography>
+                        <div style={{display: 'flex', justifyContent: 'center', marginTop: 100}}>
+                            <CircularProgress 
+                                disableShrink 
+                                color='secondary' 
+                                size={150} 
+                            />
+                        </div>
                     </div>
                 </div>
-            </Fade>
+                </Fade>
         </ThemeProvider>
     )
 }
