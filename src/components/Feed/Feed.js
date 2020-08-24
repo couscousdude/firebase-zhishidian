@@ -1,8 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Main from './Main';
-import post1 from './post1';
 import { useHistory } from 'react-router-dom';
+import getPosts from '../../dbInterface/getPosts';
 
 const useStyles = makeStyles(theme => ({
     text: {
@@ -49,15 +49,25 @@ export default function Feed(props) {
     React.useEffect(() => {
         // fetch posts here
         // placeholder api call:
+        const handleGetPosts = async () => {
+          const res = await getPosts();
+          setPosts(res);
+          setLoading(false);
+          setInitialLoading(false);
+        }
         setLoading(true);
-        setTimeout(() => {
-            setPosts([post1]);
-            setLoading(false);
-            setInitialLoading(false);
-        }, 1000);
+        handleGetPosts();
     }, [setInitialLoading, setLoading]);
   
     React.useEffect(() => {
+      const handleGetArchives = async () => {
+        setPosts([]);
+        setLoading(true);
+        const res = await getPosts();
+        setPosts(res);
+        setLoading(false);
+        setInitialLoading(false);
+      }
       let urlArchiveParam = new URLSearchParams(history.location.search).get('archive');
       if (urlArchiveParam) {
         if (urlArchiveParam.split(' ').length !== 2 
@@ -68,23 +78,18 @@ export default function Feed(props) {
         } else {
             setArchive(urlArchiveParam.split(' '));
             // api call to fetch archives
-            setLoading(true);
-            setPosts([]);
-            setTimeout(() => {
-                setLoading(false);
-                setPosts([post1]);
-            }, 1000);
+            handleGetArchives();
         }
     } else {
         setArchive([]);
     }
-    }, [history.location.search, setLoading, history]);
+    }, [history.location.search, setLoading, history, setInitialLoading]);
 
-    const handleReload = () => {
+    const handleReload = async () => {
         setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
+        setPosts([]);
+        setPosts(await getPosts());
+        setLoading(false);
     }
 
     return(

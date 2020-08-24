@@ -60,13 +60,11 @@ export default function Main(props) {
             </Grid>
           { posts.length
           ? (
-            posts.map((post) => {
-              return [...Array(3)].map(() => (
-                <Grid item xs={12} md={12} sm={12}>          
-                  <Post post={post} />
-                </Grid>
-              ))
-            })) 
+            posts.map((post) => (
+              <Grid item xs={12} md={12} sm={12}>          
+                <Post post={post} />
+              </Grid>
+            )))
             : [...Array(3)].map(() => (
               <Grid item xs={12} md={12} sm={12}>
                 <PlaceHolderPost />

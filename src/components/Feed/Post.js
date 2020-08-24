@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Markdown from '../Markdown';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { grey } from '@material-ui/core/colors';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     markdown: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Post(props) {
     const { post } = props;
+    const { title, author, date, body } = post;
     const classes = useStyles();
 
     const [expanded, setExpanded] = React.useState(false);
@@ -50,10 +52,10 @@ export default function Post(props) {
             >
                 <CardActionArea onClick={() => setExpanded(!expanded)}>
                     <CardContent>
-                        <Typography variant='h5' className={classes.postTitle}>stink</Typography>
-                        <Typography variant='caption'>5 minutes ago By stink</Typography>
-                        <Markdown className={classes.markdown} key={post.substring(0, 40)}>
-                        {post}
+                        <Typography variant='h5' className={classes.postTitle}>{title}</Typography>
+                        <Typography variant='caption'>{moment.unix(date).fromNow()} ago by <b>{author}</b></Typography>
+                        <Markdown className={classes.markdown} key={body.substring(0, 40)}>
+                        {body}
                         </Markdown>
                     </CardContent>
                 </CardActionArea>

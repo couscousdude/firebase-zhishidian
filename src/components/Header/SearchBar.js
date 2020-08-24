@@ -98,7 +98,7 @@ function SearchBar(props) {
             type='text'
             inputRef={searchInput}
           />
-          <Zoom in={searchValue}>
+          <Zoom in={searchValue ? true : false}>
             <IconButton 
               color="secondary" 
               className={classes.iconButton} 

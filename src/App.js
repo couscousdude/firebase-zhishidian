@@ -65,7 +65,9 @@ function App() {
             ? (
               <>
                 {!mobile ? (
-                  <Drawer />
+                  <nav>
+                    <Drawer />
+                  </nav>
                   ) : null}
                 {loading ? <StickyLoadingBar /> : null}
               </>

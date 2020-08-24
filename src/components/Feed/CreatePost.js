@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Card, CardContent, TextField, Typography, Collapse, Button } from '@material-ui/core';
+import { Card, CardContent, TextField, Typography, Collapse, Button, ThemeProvider, createMuiTheme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 // import postItem from '../databaseManagement/postItem';
 import { Divider } from '@material-ui/core';
 import CircularStatic from '../CircularStatic';
 import PropTypes from 'prop-types';
+import { red } from '@material-ui/core/colors';
 
 const postItem = async (one, two, three, four) => {
     const timeoutPromise = () => new Promise((resolve, ms) => {
@@ -12,6 +13,14 @@ const postItem = async (one, two, three, four) => {
     });
     await timeoutPromise();
 };
+
+const theme = createMuiTheme({
+    palette: {
+        secondary: {
+            main: red[500]
+        }
+    }
+});
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -78,59 +87,61 @@ function InlineCreatePost(props) {
     }
 
     return(
-    <Collapse in={expanded} timeout='auto' collapsedHeight='0px'>
-        <Card className={classes.root} variant="outlined">
-            <CardContent>
-                <Typography variant="h6">
-                    What's going on?
-                </Typography>
-                <TextField
-                    fullWidth
-                    id="title"
-                    margin='dense'
-                    label='Enter a title for your post'
-                    variant='filled'
-                    onChange={handleTitleInputChange}
-                    defaultValue={title}
-                    error={titleErrored}
-                    helperText={titleErrored ? titleErrorMessage : null}
-                />
-                <TextField
-                    fullWidth
-                    margin="dense"
-                    id="content"
-                    label='Enter something for the body of your post'
-                    type="content"
-                    variant="outlined"
-                    multiline
-                    rows={12}
-                    onChange={handleContentInputChange}
-                    error={contentErrored}
-                    helperText={contentErrored ? 'Content cannot be only whitespace' : null}
-                />
-                    <div>
-                        <Divider style={{marginBottom: 5}} />
-                        <CircularStatic
-                        variant='static' 
-                        value={content.length < 400 ? Math.ceil(content.length/4) : 100} 
-                        size={40} 
-                        color={content.length > 400 ? 'secondary': 'primary'} />
-                        <Divider />
-                        <Typography variant='caption' className={classes.erroredText}>
-                            { content.length > 400
-                                ? '400 character limit reached!'
-                                : null
-                            }
+        <ThemeProvider theme={theme}>
+            <Collapse in={expanded} timeout='auto' collapsedHeight='0px'>
+                <Card className={classes.root} variant="outlined">
+                    <CardContent>
+                        <Typography variant="h6">
+                            What's going on?
                         </Typography>
-                    </div>
-                    <div>
-                        <Button color="inherit" disabled={!title || !content || title.length > 20 || content.length > 400 ? true : false} onClick={handleCreatePost}>
-                            Create
-                        </Button>
-                    </div>
-            </CardContent>
-        </Card>
-    </Collapse>
+                        <TextField
+                            fullWidth
+                            id="title"
+                            margin='dense'
+                            label='Enter a title for your post'
+                            variant='filled'
+                            onChange={handleTitleInputChange}
+                            defaultValue={title}
+                            error={titleErrored}
+                            helperText={titleErrored ? titleErrorMessage : null}
+                        />
+                        <TextField
+                            fullWidth
+                            margin="dense"
+                            id="content"
+                            label='Enter something for the body of your post'
+                            type="content"
+                            variant="outlined"
+                            multiline
+                            rows={12}
+                            onChange={handleContentInputChange}
+                            error={contentErrored}
+                            helperText={contentErrored ? 'Content cannot be only whitespace' : null}
+                        />
+                            <div>
+                                <Divider style={{marginBottom: 5}} />
+                                <CircularStatic
+                                variant='static' 
+                                value={content.length < 400 ? Math.ceil(content.length/4) : 100} 
+                                size={40} 
+                                color={content.length > 400 ? 'secondary': 'primary'} />
+                                <Divider />
+                                <Typography variant='caption' className={classes.erroredText}>
+                                    { content.length > 400
+                                        ? '400 character limit reached!'
+                                        : null
+                                    }
+                                </Typography>
+                            </div>
+                            <div>
+                                <Button color="primary" disabled={!title || !content || title.length > 20 || content.length > 400 ? true : false} onClick={handleCreatePost}>
+                                    Create
+                                </Button>
+                            </div>
+                    </CardContent>
+                </Card>
+            </Collapse>
+        </ThemeProvider>
     );
 }
 InlineCreatePost.propTypes = {

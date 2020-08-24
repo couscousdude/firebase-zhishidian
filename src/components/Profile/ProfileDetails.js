@@ -34,7 +34,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function ProfileDetails(props) {
-    const { userDetails } = props;
+    const { user } = props;
+    const { username, firstName, lastName, bio, profileColor } = user;
     const classes = useStyles();
 
     const profileColorPicker = (color) => {
@@ -57,19 +58,19 @@ function ProfileDetails(props) {
             <CardContent>
                 <Grid container className={classes.root} justify={'flex-start'} spacing={2}>
                     <Grid item>
-                        <Avatar aria-label="profile" className={profileColorPicker(userDetails.profileColor)} variant='rounded'>
+                        <Avatar aria-label="profile" className={profileColorPicker(profileColor)} variant='rounded'>
                             <Typography variant='h1'>
-                                {userDetails.username ? userDetails.username[0].toUpperCase() : null}
+                                {username ? username[0].toUpperCase() : null}
                             </Typography>
                         </Avatar>
                     </Grid>
                     <Grid item xs={12} xl>
                         <div className={classes.profileName}>
                             <Typography variant='h2'>
-                                {userDetails.username}
+                                {username}
                             </Typography>
                             <Typography variant='h5'>
-                                {userDetails.firstName} {userDetails.lastName}
+                                {firstName} {lastName}
                             </Typography>
                             {/* <Typography variant='body2' color='textSecondary'>
                                 Student
@@ -81,7 +82,7 @@ function ProfileDetails(props) {
                             Bio:
                         </Typography>
                         <Typography paragraph style={{wordWrap: 'break-word'}}>
-                            {userDetails.bio}
+                            {bio}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -93,5 +94,5 @@ function ProfileDetails(props) {
 export default ProfileDetails;
 
 ProfileDetails.propTypes = {
-    userDetails: PropTypes.object
+    user: PropTypes.object
 }

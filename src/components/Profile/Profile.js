@@ -2,6 +2,8 @@ import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import ProfileDetails from './ProfileDetails';
 import { makeStyles } from '@material-ui/core/styles';
+import getUser from '../../dbInterface/getUser';
+import ProfileSkeleton from './ProfileSkeleton';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -20,22 +22,28 @@ const useStyles = makeStyles(theme => ({
 function Profile(props) {
     const { setLoading, setInitialLoading } = props;
     const classes = useStyles();
+    const [user, setUser] = React.useState(false);
 
     React.useEffect(() => {
-        setTimeout(() => setInitialLoading(false), 1000);
-    });
+        const handleGetUser = async () => {
+            const res = await getUser();
+            setUser(res);
+            setLoading(false);
+            setInitialLoading(false);
+        }
+        setLoading(true);
+        handleGetUser();
+    }, [setLoading, setInitialLoading]);
 
     return (
         <Grid container spacing={2} className={classes.root} style={{padding: 24}} justify='center'>
             <Grid item xs={12} md={10} sm={12} className={classes.card}>
-                <ProfileDetails userDetails={{
-                    username: 'test',
-                    firstName: 'test',
-                    lastName: 'test',
-                    profileColor: 'test',
-                    bio: 'test'
-                }}
-                />
+                { user
+                    ? (
+                    <ProfileDetails
+                        user={user}
+                    /> ) : <ProfileSkeleton />
+                }
             </Grid>
             <Grid item xs={12} />
             <Grid item xs={12}>
