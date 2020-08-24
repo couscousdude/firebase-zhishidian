@@ -10,6 +10,33 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const mainFeaturedPost = {
+    title: 'Sample main featured post',
+    description:
+      "description of featured post",
+    image: 'https://source.unsplash.com/random',
+    imgText: 'main image description',
+    linkText: 'Continue reading…',
+  };
+  const featuredPosts = [
+    {
+      title: 'Sample secondary featured post',
+      date: 'August 19',
+      description:
+        'description',
+      image: 'https://source.unsplash.com/random',
+      imageText: 'Image Text',
+    },
+    {
+      title: 'Sample secondary featured post',
+      date: 'August 16',
+      description:
+        'description',
+      image: 'https://source.unsplash.com/random',
+      imageText: 'Image Text',
+    },
+  ];
+
 export default function Feed(props) {
     const classes = useStyles();
     const { setInitialLoading, setLoading } = props;
@@ -53,7 +80,23 @@ export default function Feed(props) {
     }
     }, [history.location.search, setLoading, history]);
 
+    const handleReload = () => {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }
+
     return(
-        <Main title='Recent activity' posts={posts} archive={archive} />
+        <div style={posts ? {} : {overflow: "hidden"}}>
+            <Main 
+                title='Recent posts' 
+                posts={posts} 
+                archive={archive} 
+                mainFeaturedPost={mainFeaturedPost}
+                featuredPosts={featuredPosts}
+                reload={handleReload}
+            />
+        </div>
     )
 }

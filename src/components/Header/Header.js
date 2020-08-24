@@ -6,6 +6,7 @@ import { Typography, Toolbar, IconButton, ClickAwayListener } from '@material-ui
 import SearchBar from './SearchBar';
 import ArrowForwardIosTwoToneIcon from '@material-ui/icons/ArrowForwardIosTwoTone';
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbarTitle: {
     flex: 1,
+    fontWeight: 500
   },
   toolbarLink: {
     padding: theme.spacing(1),
@@ -49,13 +51,14 @@ export default function Header(props) {
       <div className={classes.root}>
         <Toolbar className={classes.toolbar}>
           <Typography
-              component="h2"
-              variant="h5"
-              color="inherit"
-              noWrap
-              className={classes.toolbarTitle}
-              align='center'
-              // style={!expanded ? {marginLeft: 80} : {}}
+            variant="h5"
+            color="inherit"
+            noWrap
+            className={classes.toolbarTitle}
+            align='center'
+            component={Link}
+            to='/'
+            style={{textDecoration: 'none'}}
           >
               {title}
           </Typography>

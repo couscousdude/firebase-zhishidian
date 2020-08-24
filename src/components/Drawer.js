@@ -4,7 +4,6 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -63,20 +62,31 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),  },
+    padding: theme.spacing(3),
+  },
 }));
 
 export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const storage = window.localStorage;
+  const [open, setOpen] = React.useState(
+    storage.getItem('drawerSetting')
+      ? storage.getItem('drawerSetting') === 'open'
+        ? true
+        : false
+      : false
+  );
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
+    storage.setItem('drawerSetting', 'open');
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
+    storage.setItem('drawerSetting', 'closed');
   };
 
   return (

@@ -14,8 +14,7 @@ const months = {
 }
 
 export default function monthYearCounter(currentMonth, currentYear) {
-    if (typeof currentMonth !== 'number' || typeof currentYear !== 'number' || !months.hasOwnProperty(currentMonth)) return;
-
+    if (!months.hasOwnProperty(currentMonth)) return {};
     let result = [];
 
     let year = currentYear;
@@ -24,7 +23,7 @@ export default function monthYearCounter(currentMonth, currentYear) {
 
     while (counter < 12) {
         month--;
-        if (month === 0) { month = 12; year-- };
+        if (month === 0) { month = 12; year-- }
         counter++;
         result.push({ title: `${months[month]} ${year}`, url: `?archive=${month}+${year}` });
     }

@@ -11,6 +11,7 @@ import BottomNavigation from './components/BottomNavigation';
 import StickyLoadingBar from './components/StickyLoadingBar';
 import NotFound from './components/NotFound';
 import InitialLoadingScreen from './components/InitialLoadingScreen';
+import Profile from './components/Profile/Profile';
 
 const theme = createMuiTheme({
   palette: {
@@ -30,16 +31,18 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(true);
   const [initialLoading, setInitialLoading] = React.useState(true);
 
+  const mobileThresh = 600;
+
   const updateWindowDimensions = () => {
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= mobileThresh) {
       setMobile(true);
-    } else if (window.innerWidth > 768) {
+    } else if (window.innerWidth > mobileThresh) {
       setMobile(false);
     }
   }
 
   React.useEffect(() => {
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= mobileThresh) {
       setMobile(true);
     }
     window.addEventListener('resize', updateWindowDimensions);
@@ -49,20 +52,6 @@ function App() {
     }
   }, []);
 
-  let Nav;
-  if (mobile) {
-    Nav = <BottomNavigation />
-  } else {
-    Nav = <Drawer />
-  }
-
-  let LoadingBar;
-  if (loading) {
-    LoadingBar = <StickyLoadingBar />
-  } else {
-    LoadingBar = null;
-  }
-
   return (
     <Router>
       <Helmet>
@@ -70,42 +59,66 @@ function App() {
       </Helmet>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <InitialLoadingScreen on={initialLoading} setInitialLoading={setInitialLoading} />
+        <div style={{display: 'flex', height: 'calc(100vh-60px)'}}>
+          <InitialLoadingScreen on={initialLoading} setInitialLoading={setInitialLoading} />
+          { !initialLoading
+            ? (
+              <>
+                {!mobile ? (
+                  <Drawer />
+                  ) : null}
+                {loading ? <StickyLoadingBar /> : null}
+              </>
+            ) : null }
+          <Container maxWidth='lg'>
+            <Header 
+              title='Zhi Shi Dian' 
+              mobile={mobile}
+            />
+            <main style={{flexGrow: 1}}>
+              <Switch>
+                <Redirect from='/' to='/feed' exact />
+                <Route 
+                  path='/feed' 
+                  render={() => (
+                    loggedIn
+                      ? <Feed 
+                          setLoading={setLoading} 
+                          initialLoading={initialLoading} 
+                          setInitialLoading={setInitialLoading} 
+                        />
+                      : <Redirect to='/login' />
+                  )} 
+                />
+                <Route 
+                  path='/users' 
+                  render={() => (
+                    loggedIn
+                      ? <Profile 
+                          setLoading={setLoading} 
+                          initialLoading={initialLoading} 
+                          setInitialLoading={setInitialLoading} 
+                        />
+                      : <Redirect to='/login' />
+                  )} 
+                />
+                <Route 
+                  render={() => (
+                    <NotFound setInitialLoading={setInitialLoading} />
+                  )}
+                />
+              </Switch>
+            </main>
+          </Container>
+        </div>
+        <nav style={{height: '60px'}}>
         { !initialLoading
-          ? (
-            <>
-              {Nav}
-              {LoadingBar}
-            </>
-          ) : null }
-        <Container maxWidth='lg'>
-          <Header 
-            title='Zhi Shi Dian' 
-            mobile={mobile}
-          />
-          <main>
-            <Switch>
-              <Redirect from='/' to='/feed' exact />
-              <Route 
-                path='/feed' 
-                render={() => (
-                  loggedIn
-                    ? <Feed 
-                        setLoading={setLoading} 
-                        initialLoading={initialLoading} 
-                        setInitialLoading={setInitialLoading} 
-                      />
-                    : <Redirect to='/login' />
-                )} 
-              />
-              <Route 
-                render={() => (
-                  <NotFound setInitialLoading={setInitialLoading} />
-                )}
-              />
-            </Switch>
-          </main>
-        </Container>
+            ? (
+              mobile ? (
+                <BottomNavigation />
+                ) : null
+            ) : null }
+        </nav>
       </ThemeProvider>
     </Router>
   );

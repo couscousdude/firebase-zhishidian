@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         backgroundColor: grey['50']
+    },
+    postTitle: {
+        fontWeight: 500
     }
   }));
 
@@ -47,7 +50,7 @@ export default function Post(props) {
             >
                 <CardActionArea onClick={() => setExpanded(!expanded)}>
                     <CardContent>
-                        <Typography variant='h5'>stink</Typography>
+                        <Typography variant='h5' className={classes.postTitle}>stink</Typography>
                         <Typography variant='caption'>5 minutes ago By stink</Typography>
                         <Markdown className={classes.markdown} key={post.substring(0, 40)}>
                         {post}

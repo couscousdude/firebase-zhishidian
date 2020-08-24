@@ -13,7 +13,7 @@ const useStyles = makeStyles({
         transform: 'translate(-50%, -50%)'
     },
     text: {
-        fontWeight: 300,
+        fontWeight: 500,
     },
     blank: {
         opacity: 1,

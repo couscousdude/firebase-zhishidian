@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   link: {
-      color: theme.palette.primary
+      fontWeight: 500,
+      whiteSpace: 'nowrap'
   }
 }));
 
@@ -25,7 +26,7 @@ export default function Sidebar(props) {
   const { archives, description, social, title } = props;
 
   return (
-    <Grid item xs={12} md={4}>
+    <Grid item xs={12} md={12}>
       <Paper elevation={0} className={classes.sidebarAboutBox}>
         <Typography variant="h6" gutterBottom>
           {title}
@@ -41,6 +42,7 @@ export default function Sidebar(props) {
             key={'current'} 
             component={RouterLink} 
             to={''}
+            className={classes.link}
         >
         Current
         </Link>
@@ -51,6 +53,7 @@ export default function Sidebar(props) {
             key={archive.title} 
             component={RouterLink} 
             to={archive.url}
+            className={classes.link}
         >
         {archive.title}
         </Link>
@@ -59,7 +62,7 @@ export default function Sidebar(props) {
         Social
       </Typography>
       {social.map((network) => (
-        <Link display="block" variant="body1" href={network.href} key={network} rel='noopener noreferrer' target='__blank'>
+        <Link display="block" variant="body1" href={network.href} key={network} rel='noopener noreferrer' target='__blank' className={classes.link}>
           <Grid container direction="row" spacing={1} alignItems="center">
             <Grid item>
               <network.icon />

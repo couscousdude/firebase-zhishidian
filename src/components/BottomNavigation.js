@@ -11,7 +11,8 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         position: 'fixed',
         bottom: 0,
-        opacity: 1
+        opacity: 1,
+        height: '50px'
     },
     navigation: {
         backgroundColor: theme.palette.secondary.main,
